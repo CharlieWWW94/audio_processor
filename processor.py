@@ -21,11 +21,11 @@ class AudioProcessor:
         self.ax.plot(self.time, self.sample_num)
         plt.savefig('wave_graphs/new_wave.png')
     
-    def drop_pitch(self):
-        #Drops the pitch of the previously given audio file, and reproduces the audio.
-        self.dropped = librosa.effects.pitch_shift(self.sample_num, sr=self.sample_rate, n_steps=-4)
-        sf.write('new_audio/low.wav', self.dropped, self.sample_rate)
-        playsound('new_audio/low.wav')
+    def alter_pitch(self, change, name):
+        #Change the pitch of the previously given/recorded audio file, and reproduces the audio.
+        self.dropped = librosa.effects.pitch_shift(self.sample_num, sr=self.sample_rate, n_steps=change)
+        sf.write(f'new_audio/{name}.wav', self.dropped, self.sample_rate)
+        playsound(f'new_audio/{name}.wav')
 
 
 

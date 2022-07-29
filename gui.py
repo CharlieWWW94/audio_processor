@@ -41,18 +41,35 @@ class Gui(tk.Tk):
         #Adds the visual waveform to the GUI and button to drop pitch of audio
         new_image = PIL.Image.open('wave_graphs/new_wave.png')
         image_ready = PIL.ImageTk.PhotoImage(new_image)
+        
         self.graph = tk.Label(self, image=image_ready)
         self.graph.image = image_ready
         self.graph.grid(row=3, column=0, columnspan=3)
-        self.drop_button = tk.Button(text='Make it bassy.', command=self.processor.drop_pitch)
+        
+        self.slide = tk.Scale(from_=5, to=-5)
+        self.slide.grid(row=4, column=0, columnspan=3)
+
+        self.drop_button = tk.Button(text='Change pitch.', command=self.alter_audio)
         self.drop_button.config(width=80, height=2)
-        self.drop_button.grid(row=4, column=0, columnspan=3)
+        self.drop_button.grid(row=5, column=0, columnspan=3)
     
     def record_audio(self):
+        #Allows users to record audio and then display the soundwave in the GUI
+        self.record_btn = tk.Button(text='Record', command=self.record_audio, bg='RED')
         audio_recorder = audioRecorder()
         audio_recorder.record()
+        self.record_btn = tk.Button(text='Record', command=self.record_audio, bg='WHITE')
         audio_recorder.save(rec_name=self.name.get())
         self.make_image()
+    
+    def alter_audio(self):
+        #Initiates audio processer pitch manipulation.
+
+        if self.name.get():
+            new_name = self.name.get()
+        else:
+            new_name = 'pitch_edited_file'
+        self.processor.alter_pitch(change=self.slide.get(), name=new_name)
 
 
 
